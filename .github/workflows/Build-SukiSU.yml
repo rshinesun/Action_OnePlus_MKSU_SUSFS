@@ -1,4 +1,6 @@
-name: Build OnePlus_Kernel
+name: Build OnePlus13_SukiSU
+on:
+  workflow_dispatch:
 
 jobs:
   build:
