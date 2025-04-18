@@ -1,38 +1,5 @@
 name: Build OnePlus_Kernel
-on:
-  workflow_dispatch:
-    inputs:
 
-      kernelsu_variant:
-        description: "选择 KSU"
-        required: true
-        type: choice
-        options:
-          - Kernel
-          - SukiSU
-        default: SukiSU
-      kernelsu_version:
-        description: "选择 KSU 版本"
-        required: true
-        type: choice
-        options:
-          - without ksu
-          - tag
-          - main
-        default: main
-      SUSFS_ENABLED:
-        description: "添加 SUSFS"
-        required: true
-        type: boolean
-        default: true
-      VFS_patch_ENABLED:
-        description: "添加 vfs 补丁（新钩子）？"
-        required: true
-        type: choice
-        options:
-          - enable
-          - disable
-        default: enable
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -110,7 +77,6 @@ jobs:
           echo "完成"
           
       - name: Apply Hide Stuff Patches
-        if: ${{ github.event.inputs.SUSFS_ENABLED == 'true' }}
         run: |
           cd kernel_workspace/kernel_platform/common
           cp ../../SukiSU_patch/69_hide_stuff.patch ./
@@ -118,7 +84,6 @@ jobs:
           patch -p1 -F 3 < 69_hide_stuff.patch
          
       - name: Apply New Hooks Patches
-        if: ${{ github.event.inputs.VFS_patch_ENABLED == 'enable' }}
         run: |
           cd kernel_workspace/kernel_platform/common
           cp ../../SukiSU_patch/hooks/new_hooks.patch ./
